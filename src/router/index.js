@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Error404 from '@/components/Error404'
+import Hello from '@/components/views/Hello'
+import Error404 from '@/components/views/Error404'
 
 Vue.use(Router)
 
@@ -10,7 +10,26 @@ export default new Router({
     {
       path: '/',
       name: 'Hello',
-      component: Hello
+      component: Hello,
+      children: [
+        {
+          path: 'test',
+          name: 'test',
+          component: Hello
+        }
+      ]
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Hello,
+      children: [
+        {
+          path: 'test2',
+          name: 'test2',
+          component: Hello
+        }
+      ]
     },
     {
       path: '*',
