@@ -8,6 +8,7 @@ Vue.use(VueHead, {
   separator: '|',
   complement: 'BlueSalt Labs Vue Kiosk'
 })
+
 Vue.use(Router)
 
 const routes = [
