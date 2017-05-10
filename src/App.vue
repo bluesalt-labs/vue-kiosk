@@ -12,14 +12,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   @import '../node_modules/bootstrap/dist/css/bootstrap.css';
-</style>
-
-<style>
-  header,
-  footer {
-    background: #222;
-    min-height: 15px;
-  }
+  @import './sass/vue-kiosk.scss';
 </style>

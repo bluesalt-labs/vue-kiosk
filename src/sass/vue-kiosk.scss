@@ -1,0 +1,12 @@
+@import './_variables.scss';
+
+header,
+footer {
+  background: #222;
+  min-height: 15px;
+}
+
+#app {
+  background: $backgroundPrimary;
+  color: $textPrimary;
+}
