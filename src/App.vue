@@ -1,19 +1,15 @@
 <template>
   <div id="app">
-    <header>
-      <router-link v-bind:to="'/'">Home</router-link>
-    </header>
+    <base-header></base-header>
     <router-view></router-view>
-    <footer>
-
-    </footer>
+    <base-footer></base-footer>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  export default {
+    name: 'app'
+  }
 </script>
 
 <style>

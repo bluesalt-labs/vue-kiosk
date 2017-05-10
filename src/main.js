@@ -6,6 +6,9 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+Vue.component('base-header', require('./BaseHeader.vue'))
+Vue.component('base-footer', require('./BaseFooter.vue'))
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -5,11 +5,19 @@
 </template>
 
 <script>
+
 export default {
   name: 'hello',
   data () {
     return {
-      title: 'Hello.'
+      title: 'Hello'
+    }
+  },
+  head: {
+    title () {
+      return {
+        inner: this.title
+      }
     }
   }
 }
