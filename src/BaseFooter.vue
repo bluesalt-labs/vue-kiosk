@@ -10,3 +10,12 @@
     name: 'base-footer'
   }
 </script>
+
+<style lang="scss">
+  @import "sass/variables.scss";
+
+  footer {
+    background: $headerBg;
+    min-height: 50px;
+  }
+</style>

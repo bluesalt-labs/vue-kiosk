@@ -1,7 +1,19 @@
 <template>
   <div class="container-primary">
-    <h1>Hello.</h1>
-    <img-slider></img-slider>
+    <div class="section">
+      <h1>Hello.</h1>
+      <p>
+        This page contains demos of the components I have built.
+      </p>
+    </div>
+    <div class="section">
+      <h2>image Slider</h2>
+      <hr />
+      <img-slider></img-slider>
+    </div>
+    <div class="section">
+
+    </div>
   </div>
 </template>
 

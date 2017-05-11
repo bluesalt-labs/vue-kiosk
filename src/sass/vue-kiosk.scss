@@ -8,23 +8,9 @@ html, body, #app {
   min-height: 100vh;
   height: 100vh;
   width: 100vw;
-
+  max-width: 100vw;
   font-family: $fontPrimary;
-}
-
-header {
-  height: $headerHeight;
-  background: $headerBg;
-}
-
-footer {
-
-}
-
-header,
-footer {
-  background: #222;
-  min-height: 50px;
+  overflow-x: hidden;
 }
 
 #app {
@@ -34,6 +20,8 @@ footer {
 
 .container-primary {
   margin: 0 $containerMarginLg;
+  position: relative;
+  min-height: 100%;
 }
 
 

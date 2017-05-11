@@ -7,6 +7,7 @@ import VueTouch from 'vue-touch'
 // Views
 import Hello from '@/views/Hello'
 import Error404 from '@/views/Error404'
+import Blank from '@/views/Blank'
 
 Vue.use(VueHead, {
   separator: '|',
@@ -22,6 +23,11 @@ const routes = [
     path: '/',
     name: 'Hello',
     component: Hello
+  },
+  {
+    path: '/blank',
+    name: 'Blank',
+    component: Blank
   },
   {
     path: '*',
