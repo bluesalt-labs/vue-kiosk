@@ -15,3 +15,12 @@
     }
   }
 </script>
+
+<style lang="scss">
+  #myElement {
+    background: silver;
+    height: 300px;
+    text-align: center;
+    font: 30px/300px 'Arimo', sans-serif;
+  }
+</style>

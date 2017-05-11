@@ -25,12 +25,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  #myElement {
-    background: silver;
-    height: 300px;
-    text-align: center;
-    font: 30px/300px Helvetica, Arial, sans-serif;
-  }
-</style>
