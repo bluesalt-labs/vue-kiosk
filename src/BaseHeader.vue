@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="container-fluid">
+    <div class="container-primary">
       <router-link v-bind:to="'/'">Home</router-link>
     </div>
   </header>

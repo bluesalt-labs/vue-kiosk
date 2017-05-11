@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <base-header></base-header>
-    <router-view></router-view>
+    <router-view id="view-container"></router-view>
     <base-footer></base-footer>
   </div>
 </template>
@@ -19,6 +19,6 @@
 </script>
 
 <style lang="scss">
-  @import '../node_modules/bootstrap/dist/css/bootstrap.css';
+  /*@import '../node_modules/bootstrap/dist/css/bootstrap.css';*/
   @import './sass/vue-kiosk.scss';
 </style>
