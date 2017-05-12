@@ -21,7 +21,7 @@
 import ImgSlider from '@/components/ImgSlider'
 
 export default {
-  name: 'hello',
+  name: 'Hello',
   data () {
     return {
       title: 'Hello'

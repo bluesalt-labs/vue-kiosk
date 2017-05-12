@@ -1,15 +1,19 @@
 <template>
-  <div>
-    <div id="img-container">
-      <div v-for="(image, index) in images">
-        <img :src="getImg(image.file)" :alt="image.source" />
+    <div id="slider-container"  v-on:panleft="navLeft" v-on:panright="navRight">
+      <div class="nav-btn" id="nav-left" :click="navLeft"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+      <div class="nav-btn" id="nav-right" :click="navRight"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+
+      <v-touch id="img-container">
+        <img v-for="(image, index) in images" :src="getImg(image.file)" :alt="image.source" />
+      </v-touch>
+
+      <div id="nav-icons">
+        <!-- todo add nav icons -->
       </div>
     </div>
-
-    <br /><br />
-    <hr />
+    <!--
     <v-touch id="myElement" v-on:panleft="test" v-on:panright="test" v-on:tap="test" v-on:press="test"></v-touch>
-  </div>
+    -->
 </template>
 
 
@@ -27,11 +31,28 @@
           { file: 'ama-dablam-2064522_1920.jpg', source: 'https://pixabay.com/photo-2064522/' },
           { file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/' }
         ],
+        imgCache: {
+          left: { file: '', source: '' },
+          center: { file: '', source: '' },
+          right: { file: '', source: '' }
+        },
+        init: function () {
+
+        },
         test: function (ev) {
           ev.target.textContent = ev.type + ' gesture detected'
         },
         getImg: function (file) {
-          return require('../images/' + file)
+          if (file !== '') { return require('../images/' + file) }
+        },
+        imgWidth: function () {
+          return document.getElementsByClassName('img-container')[0].firstChild.width
+        },
+        navLeft: function () {
+
+        },
+        navRight: function () {
+
         }
       }
     }
@@ -39,25 +60,60 @@
 </script>
 
 <style lang="scss">
-  $sliderHeight: 720px;
-  $sliderWidth: 1280px;
+  @import '~font-awesome/css/font-awesome.min.css';
 
-  #img-container {
+  $imageWidth: 1024px;
+  $imageHeight: 576px;
+  $navBtnWidth: 100px;
+
+  .nav-btn {
+    width: $navBtnWidth;
+    height: $imageHeight;
+    position: absolute;
+    top: 0;
+    background:(25, 25, 25, 0);
+    color: rgba(25, 25, 25, 0.8);
+    -webkit-transition: background 300ms, color 300ms;
+    transition: background 300ms, color 300ms;
+    cursor: pointer;
+  }
+  .nav-btn:hover,
+  .nav-btn:active {
+    background: rgba(25, 25, 25, 0.1);
+    color: rgba(25, 25, 25, 1);
+  }
+  .nav-btn#nav-left { left: 0; }
+  .nav-btn#nav-right { right: 0; }
+
+  .nav-btn > i {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .nav-btn > i:before {
+    display:block;
+    width: 100%;
+    text-align: center;
+    margin-top: $imageHeight / 2;
+  }
+
+  #slider-container {
+    position: relative;
     overflow: hidden;
-    height: $sliderHeight;
-    width: $sliderWidth;
-    margin: auto;
+    height: $imageHeight;
+    width: $imageWidth + ($navBtnWidth * 2);
+    margin: 30px auto;
   }
 
-  #img-container > div {
+  #img-container  {
     display: inline-block;
-    height: $sliderHeight;
-    width: $sliderWidth;
+    height: $imageHeight;
+    margin: 0 $navBtnWidth;
   }
 
-  #img-container > div > img {
-    max-width: $sliderWidth;
+  #img-container img {
+    max-width: $imageWidth;
     height: auto;
+    float:left;
   }
-
 </style>

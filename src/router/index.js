@@ -6,8 +6,9 @@ import VueTouch from 'vue-touch'
 
 // Views
 import Hello from '@/views/Hello'
-import Error404 from '@/views/Error404'
+import ImageSlider from '@/views/ImageSlider'
 import Blank from '@/views/Blank'
+import Error404 from '@/views/Error404'
 
 Vue.use(VueHead, {
   separator: '|',
@@ -23,6 +24,11 @@ const routes = [
     path: '/',
     name: 'Hello',
     component: Hello
+  },
+  {
+    path: '/image-slider',
+    name: 'ImageSlider',
+    component: ImageSlider
   },
   {
     path: '/blank',

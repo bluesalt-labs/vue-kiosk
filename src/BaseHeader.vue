@@ -2,6 +2,7 @@
   <header>
     <div class="container-primary header-container">
       <router-link v-bind:to="'/'">Home</router-link>
+      <router-link v-bind:to="'/image-slider'">Image Slider</router-link>
       <router-link v-bind:to="'/blank'">Blank Page</router-link>
     </div>
   </header>
