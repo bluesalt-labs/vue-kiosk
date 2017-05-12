@@ -7,8 +7,8 @@
         <img v-for="(image, index) in images" :src="getImg(image.file)" :alt="image.source" />
       </v-touch>
 
-      <div id="nav-icons">
-        <!-- todo add nav icons -->
+      <div id="nav-icons" :click="goToImage(index)">
+        <i v-for="(image, index) in images" class="nav-icon" :class="{ active: imgActive(index) }"></i>
       </div>
     </div>
     <!--
@@ -45,14 +45,20 @@
         getImg: function (file) {
           if (file !== '') { return require('../images/' + file) }
         },
+        imgActive: function (index) {
+          // todo
+        },
         imgWidth: function () {
           return document.getElementsByClassName('img-container')[0].firstChild.width
         },
         navLeft: function () {
-
+          // todo
         },
         navRight: function () {
-
+          // todo
+        },
+        goToImage: function (index) {
+          // todo
         }
       }
     }
@@ -65,6 +71,28 @@
   $imageWidth: 1024px;
   $imageHeight: 576px;
   $navBtnWidth: 100px;
+  $navIconSize: 12px;
+
+  #slider-container {
+    position: relative;
+    overflow: hidden;
+    height: $imageHeight + $navIconSize + 10;
+    width: $imageWidth + ($navBtnWidth * 2);
+    margin: 30px auto;
+  }
+
+  #img-container  {
+    display: inline-block;
+    height: $imageHeight;
+    margin: 0 $navBtnWidth;
+    overflow: hidden;
+  }
+
+  #img-container img {
+    max-width: $imageWidth;
+    height: auto;
+    float:left;
+  }
 
   .nav-btn {
     width: $navBtnWidth;
@@ -97,23 +125,21 @@
     margin-top: $imageHeight / 2;
   }
 
-  #slider-container {
-    position: relative;
-    overflow: hidden;
-    height: $imageHeight;
-    width: $imageWidth + ($navBtnWidth * 2);
-    margin: 30px auto;
+  #nav-icons {
+    height: $navIconSize + 4px;
+    line-height: $navIconSize + 4px;
+    bottom: 0;
+    text-align: center;
   }
 
-  #img-container  {
+  .nav-icon {
+    font: normal normal normal 14px/1 FontAwesome;
     display: inline-block;
-    height: $imageHeight;
-    margin: 0 $navBtnWidth;
+    width: $navIconSize + 4px;
+    height: $navIconSize + 4px;
+    font-size: $navIconSize;
   }
 
-  #img-container img {
-    max-width: $imageWidth;
-    height: auto;
-    float:left;
-  }
+  .nav-icon:before { content: "\f10c"; }
+  .nav-icon.active:before { content: "\f111"; }
 </style>
