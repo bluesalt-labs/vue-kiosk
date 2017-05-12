@@ -22,4 +22,10 @@ html, body, #app {
   margin: 0 $containerMarginLg;
 }
 
+@media(max-width: $mediaSM) {
+  .container-primary {
+    margin: 0;
+  }
+}
+
 

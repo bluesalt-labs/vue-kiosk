@@ -1,9 +1,21 @@
+// Fonts
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Arimo');
-
 $fontPrimary: 'Open Sans', sans-serif;
 $fontSecondary: 'Arimo', sans-serif;
 
+
+// Media Query Sizes
+$media4K: 3840px;
+$mediaHD: 1920px;
+$mediaXL: 1280px;
+$mediaLG: 920px;
+$mediaMD: 768px;
+$mediaSM: 640px;
+$mediaXS: 320px;
+
+
+// Other
 $headerHeight: 50px;
 $headerFontSize: 15px;
 $headerBg: #222222;
