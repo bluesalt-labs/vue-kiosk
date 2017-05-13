@@ -7,7 +7,7 @@
       </p>
     </div>
     <div class="section">
-      <h2>image Slider</h2>
+      <h2>Image Slider</h2>
       <hr />
       <img-slider></img-slider>
     </div>
