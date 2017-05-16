@@ -1,6 +1,6 @@
 <template>
   <div class="container-primary">
-    <img-slider></img-slider>
+    <img-slider v-bind:navIcons="false" v-bind:navBtns="true" v-bind:navImgs="true"></img-slider>
   </div>
 </template>
 

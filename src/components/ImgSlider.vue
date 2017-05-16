@@ -1,6 +1,7 @@
 <template>
     <v-touch id="slider-container"  v-on:swipeleft="navRight" v-on:swiperight="navLeft">
-      <div class="nav-btn" id="nav-left" @click="navLeft"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+      <div class="nav-btn" id="nav-left" v-if="navBtns" @click="navLeft"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+      <div class="nav-btn" id="nav-left-inactive" v-else ></div>
 
       <div id="img-window">
         <div id="images-container" :style="{ width: (100 * numImages()) + '%' }">
@@ -10,9 +11,10 @@
         </div>
       </div>
 
-      <div class="nav-btn" id="nav-right" @click="navRight"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+      <div class="nav-btn" id="nav-right" v-if="navBtns" @click="navRight"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+      <div class="nav-btn" id="nav-right-inactive" v-else></div>
 
-      <div id="nav-icons" @click="goToImage">
+      <div id="nav-icons" @click="goToImage" v-if="navIcons">
         <i v-for="(image,index) in images" class="nav-icon" :id="'nav-icon-' + index" :class="{ active: imgActive(index) }"></i>
       </div>
     </v-touch>
@@ -22,6 +24,11 @@
 <script>
   export default {
     name: 'img-slider',
+    props: {
+      navIcons: { type: Boolean, default: false },
+      navBtns: { type: Boolean, default: true },
+      navImgs: { type: Boolean, default: false }
+    },
     data () {
       return {
         images: [
@@ -33,20 +40,63 @@
           {file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/'}
         ],
         activeImg: 0,
-        resizeTimout: false,
-        resizeDelay: 250
+        resizeTimeout: false,
+        resizeDelay: 250,
+        scrollTimeout: false,
+        scrollDelay: 450,
+        scrollThreshold: 40
       }
     },
     created: function () {
       window.addEventListener('resize', this.onScreenResize)
+      window.addEventListener('wheel', this.onScroll)
+    },
+    mounted: function () {
+      document.getElementById('slider-container').addEventListener('mouseenter', this.mouseEnterSlider)
+      document.getElementById('slider-container').addEventListener('mouseleave', this.mouseLeaveSlider)
     },
     destroyed: function () {
       window.removeEventListener('resize', this.onScreenResize)
+      window.removeEventListener('wheel', this.onScroll)
+      document.getElementById('slider-container').removeEventListener('mouseenter', this.mouseEnterSlider)
+      document.getElementById('slider-container').removeEventListener('mouseleave', this.mouseLeaveSlider)
     },
     methods: {
       onScreenResize: function () {
         clearTimeout(this.resizeTimeout)
         this.resizeTimeout = setTimeout(this.goToImage(this.activeImg), this.resizeDelay)
+      },
+      onScroll: function (e) {
+        if (e.target.parentElement.className === 'img-container') {
+          e.preventDefault()
+          if (this.scrollTimeout) { clearTimeout(this.scrollTimeout) }
+
+          this.checkImgScrollTrigger(e, function () {
+            window.removeEventListener('wheel', this.onScroll)
+
+            this.scrollTimeout = setTimeout(function () {
+              window.addEventListener('wheel', this.onScroll)
+            }.bind(this), this.scrollDelay)
+          }.bind(this))
+        }
+      },
+      checkImgScrollTrigger: function (e, callback) {
+        if (e.deltaX > 0) {
+          if (e.deltaX > this.scrollThreshold) { this.navRight(); callback() }
+        } else if (e.deltaX < 0) {
+          if (-e.deltaX > this.scrollThreshold) { this.navLeft(); callback() }
+        }
+      },
+      mouseEnterSlider: function () {
+        window.addEventListener('keydown', this.keyDownInSlider)
+      },
+      mouseLeaveSlider: function () {
+        window.removeEventListener('keydown', this.keyDownInSlider)
+      },
+      keyDownInSlider: function (event) {
+        var k = event.keyCode
+        if (k === 37 || k === 38) { this.navLeft() }
+        if (k === 39 || k === 40) { this.navRight() }
       },
       getImg: function (file) {
         if (file !== '') { return require('../images/' + file) }
@@ -175,6 +225,7 @@
   #images-container img {
     display: block;
     margin: auto;
+    -webkit-user-drag: none;
   }
 
   .nav-btn, #img-window { float: left; }
@@ -184,16 +235,15 @@
     color: $navTextColor;
     -webkit-transition: background $hoverTransTime, color $hoverTransTime;
     transition: background $hoverTransTime, color $hoverTransTime;
-    cursor: pointer;
   }
   .nav-btn:hover,
   .nav-btn:focus,
   .nav-btn:active {
+    cursor: pointer;
     background: rgba(25, 25, 25, 0.1);
     color: $navTextColorActive;
   }
   .nav-btn#nav-left {
-    left: 0;
     -webkit-border-top-left-radius: 3px;
     -webkit-border-bottom-left-radius: 3px;
     -moz-border-radius-topleft: 3px;
@@ -202,13 +252,23 @@
     border-bottom-left-radius: 3px;
   }
   .nav-btn#nav-right {
-    right: 0;
     -webkit-border-top-right-radius: 3px;
     -webkit-border-bottom-right-radius: 3px;
     -moz-border-radius-topright: 3px;
     -moz-border-radius-bottomright: 3px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+  }
+
+  /* todo: fix this. use flex? */
+  .nav-btn#nav-left-inactive:hover,
+  .nav-btn#nav-right-inactive:hover,
+  .nav-btn#nav-left:focus,
+  .nav-btn#nav-right:focus,
+  .nav-btn#nav-left:active,
+  .nav-btn#nav-right:active {
+    background: rgba(25, 25, 25, 0);
+    cursor: default;
   }
 
   .nav-btn > i {
