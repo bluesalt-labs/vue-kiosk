@@ -27,14 +27,16 @@
     props: {
       imageData: {
         type: Array,
-        default: [
-          {file: 'buildings-2297210_1920.jpg', source: 'https://pixabay.com/photo-2297210/'},
-          {file: 'lighthouse-2225445_1920.jpg', source: 'https://pixabay.com/photo-2225445/'},
-          {file: 'landscape-2211587_1920.jpg', source: 'https://pixabay.com/photo-2211587/'},
-          {file: 'water-2208931_1920.jpg', source: 'https://pixabay.com/photo-2208931/'},
-          {file: 'ama-dablam-2064522_1920.jpg', source: 'https://pixabay.com/photo-2064522/'},
-          {file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/'}
-        ]
+        default: function () {
+          return [
+            {file: 'buildings-2297210_1920.jpg', source: 'https://pixabay.com/photo-2297210/'},
+            {file: 'lighthouse-2225445_1920.jpg', source: 'https://pixabay.com/photo-2225445/'},
+            {file: 'landscape-2211587_1920.jpg', source: 'https://pixabay.com/photo-2211587/'},
+            {file: 'water-2208931_1920.jpg', source: 'https://pixabay.com/photo-2208931/'},
+            {file: 'ama-dablam-2064522_1920.jpg', source: 'https://pixabay.com/photo-2064522/'},
+            {file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/'}
+          ]
+        }
       },
       navIcons: { type: Boolean, default: false },
       navBtns: { type: Boolean, default: true },
@@ -58,11 +60,12 @@
       document.getElementById('slider-container').addEventListener('mouseenter', this.mouseEnterSlider)
       document.getElementById('slider-container').addEventListener('mouseleave', this.mouseLeaveSlider)
     },
-    destroyed: function () {
+    beforeDestroy: function () {
       window.removeEventListener('resize', this.onScreenResize)
       window.removeEventListener('wheel', this.onScroll)
-      document.getElementById('slider-container').removeEventListener('mouseenter', this.mouseEnterSlider)
-      document.getElementById('slider-container').removeEventListener('mouseleave', this.mouseLeaveSlider)
+      // todo: figure out how to remove these event listeners
+      // document.getElementById('slider-container').removeEventListener('mouseenter', this.mouseEnterSlider)
+      // document.getElementById('slider-container').removeEventListener('mouseleave', this.mouseLeaveSlider)
     },
     methods: {
       onScreenResize: function () {
@@ -197,11 +200,7 @@
   $navBtnWidthSM: 50px;
   $navIconSizeSM: 14px;
 
-  #slider-container {
-    position: relative;
-    overflow: hidden;
-    margin: 30px auto;
-  }
+  #slider-container { position: relative; }
 
   #images-container {
     display: inline-block;

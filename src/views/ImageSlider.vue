@@ -1,6 +1,8 @@
 <template>
   <div class="container-primary">
-    <img-slider v-bind:navIcons="true" v-bind:navBtns="true" v-bind:navImgs="true"></img-slider>
+    <div class="component-container">
+      <img-slider v-bind:navIcons="true" v-bind:navBtns="true" v-bind:navImgs="true"></img-slider>
+    </div>
   </div>
 </template>
 
