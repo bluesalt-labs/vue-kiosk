@@ -12,6 +12,13 @@
       <img-slider></img-slider>
     </div>
     <div class="section">
+      <h2>Task Calendar</h2>
+      <hr />
+      <calendar></calendar>
+    </div>
+    <div class="section">
+      <h2></h2>
+      <hr />
 
     </div>
   </div>
@@ -19,6 +26,7 @@
 
 <script>
 import ImgSlider from '@/components/ImgSlider'
+import Calendar from '@/components/Calendar'
 
 export default {
   name: 'Hello',
@@ -27,7 +35,7 @@ export default {
       title: 'Hello'
     }
   },
-  components: { ImgSlider },
+  components: { ImgSlider, Calendar },
   head: {
     title () {
       return {

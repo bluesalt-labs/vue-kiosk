@@ -1,8 +1,11 @@
 <template>
   <header>
     <div class="container-primary header-container">
+      <!-- todo: add the ability to have dropdown tabs in here -->
       <router-link v-bind:to="'/'">Home</router-link>
       <router-link v-bind:to="'/image-slider'">Image Slider</router-link>
+      <router-link v-bind:to="'/calendar/default'">Default Calendar</router-link>
+      <router-link v-bind:to="'/calendar/task'">Task Calendar</router-link>
       <router-link v-bind:to="'/blank'">Blank Page</router-link>
     </div>
   </header>

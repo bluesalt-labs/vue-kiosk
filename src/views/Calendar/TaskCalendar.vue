@@ -1,20 +1,20 @@
 <template>
   <div class="container-primary">
-    <img-slider v-bind:navIcons="true" v-bind:navBtns="true" v-bind:navImgs="true"></img-slider>
+    <calendar></calendar>
   </div>
 </template>
 
 <script>
-  import ImgSlider from '@/components/ImgSlider'
+  import Calendar from '@/components/Calendar'
 
   export default {
-    name: 'ImageSlider',
+    name: 'TaskCalendar',
     data () {
       return {
-        title: 'Image Slider'
+        title: 'Task Calendar'
       }
     },
-    components: { ImgSlider },
+    components: { Calendar },
     head: {
       title () {
         return {

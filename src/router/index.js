@@ -9,6 +9,8 @@ import Hello from '@/views/Hello'
 import ImageSlider from '@/views/ImageSlider'
 import Blank from '@/views/Blank'
 import Error404 from '@/views/Error404'
+import DefaultCalendar from '@/views/Calendar/DefaultCalendar'
+import TaskCalendar from '@/views/Calendar/TaskCalendar'
 
 Vue.use(VueHead, {
   separator: '|',
@@ -29,6 +31,23 @@ const routes = [
     path: '/image-slider',
     name: 'ImageSlider',
     component: ImageSlider
+  },
+  {
+    path: '/calendar',
+    name: 'Calendar',
+    component: DefaultCalendar,
+    children: [
+      {
+        path: 'default',
+        name: 'DefaultCalendar',
+        component: DefaultCalendar
+      },
+      {
+        path: 'task',
+        name: 'TaskCalendar',
+        component: TaskCalendar
+      }
+    ]
   },
   {
     path: '/blank',

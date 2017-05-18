@@ -5,7 +5,7 @@
 
       <div id="img-window">
         <div id="images-container" :style="{ width: (100 * numImages()) + '%' }">
-          <div v-for="(image,index) in images" class="img-container">
+          <div v-for="(image,index) in imageData" class="img-container">
             <img :src="getImg(image.file)" :alt="image.source" />
           </div>
         </div>
@@ -15,7 +15,7 @@
       <div class="nav-btn" id="nav-right-inactive" v-else></div>
 
       <div id="nav-icons" @click="goToImage" v-if="navIcons">
-        <i v-for="(image,index) in images" class="nav-icon" :id="'nav-icon-' + index" :class="{ active: imgActive(index) }"></i>
+        <i v-for="(image,index) in imageData" class="nav-icon" :id="'nav-icon-' + index" :class="{ active: imgActive(index) }"></i>
       </div>
     </v-touch>
 </template>
@@ -25,20 +25,23 @@
   export default {
     name: 'img-slider',
     props: {
-      navIcons: { type: Boolean, default: false },
-      navBtns: { type: Boolean, default: true },
-      navImgs: { type: Boolean, default: false }
-    },
-    data () {
-      return {
-        images: [
+      imageData: {
+        type: Array,
+        default: [
           {file: 'buildings-2297210_1920.jpg', source: 'https://pixabay.com/photo-2297210/'},
           {file: 'lighthouse-2225445_1920.jpg', source: 'https://pixabay.com/photo-2225445/'},
           {file: 'landscape-2211587_1920.jpg', source: 'https://pixabay.com/photo-2211587/'},
           {file: 'water-2208931_1920.jpg', source: 'https://pixabay.com/photo-2208931/'},
           {file: 'ama-dablam-2064522_1920.jpg', source: 'https://pixabay.com/photo-2064522/'},
           {file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/'}
-        ],
+        ]
+      },
+      navIcons: { type: Boolean, default: false },
+      navBtns: { type: Boolean, default: true },
+      navImgs: { type: Boolean, default: false }
+    },
+    data () {
+      return {
         activeImg: 0,
         resizeTimeout: false,
         resizeDelay: 250,
@@ -102,7 +105,7 @@
         if (file !== '') { return require('../images/' + file) }
       },
       numImages: function () {
-        return this.images.length
+        return this.imageData.length
       },
       isValidImgId: function (id) {
         id = parseInt(id) // just in case this gets a number as a string
