@@ -29,12 +29,12 @@
         type: Array,
         default: function () {
           return [
-            {file: 'buildings-2297210_1920.jpg', source: 'https://pixabay.com/photo-2297210/'},
-            {file: 'lighthouse-2225445_1920.jpg', source: 'https://pixabay.com/photo-2225445/'},
-            {file: 'landscape-2211587_1920.jpg', source: 'https://pixabay.com/photo-2211587/'},
-            {file: 'water-2208931_1920.jpg', source: 'https://pixabay.com/photo-2208931/'},
-            {file: 'ama-dablam-2064522_1920.jpg', source: 'https://pixabay.com/photo-2064522/'},
-            {file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/'}
+            { file: 'buildings-2297210_1920.jpg', source: 'https://pixabay.com/photo-2297210/' },
+            { file: 'lighthouse-2225445_1920.jpg', source: 'https://pixabay.com/photo-2225445/' },
+            { file: 'landscape-2211587_1920.jpg', source: 'https://pixabay.com/photo-2211587/' },
+            { file: 'water-2208931_1920.jpg', source: 'https://pixabay.com/photo-2208931/' },
+            { file: 'ama-dablam-2064522_1920.jpg', source: 'https://pixabay.com/photo-2064522/' },
+            { file: 'ring-nebula-1995076_1920.jpg', source: 'https://pixabay.com/photo-1995076/' }
           ]
         }
       },

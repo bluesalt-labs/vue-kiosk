@@ -31,12 +31,17 @@
       </div>
     </div>
     <div id="calendar-header-labels">
-      <div v-for="(label, index) in displayedData.daysPerWeekShown" class="header-label">
-        <span>{{ label }}</span>
+      <div v-for="num in daysPerWeekShown" class="header-label">
+        <span>{{ getDayName(num - 1) }}</span>
       </div>
     </div>
     <div id="calendar-body">
-
+      <div v-for="weekId in weeksShown" class="week-container" :id="'week-' + weekId">
+        <div v-for="dayId in daysPerWeekShown" class="day-container" :id="'day-' + (((weekId - 1) * daysPerWeekShown) + (dayId - 1))">
+          {{ (((weekId - 1) * daysPerWeekShown) + (dayId - 1)) }}
+        </div>
+      </div>
+      <!-- todo: put a for loop that iterates through days of a week nested in a for loop for the number of weeks -->
     </div>
   </div>
 </template>
@@ -53,8 +58,8 @@
         required: false, // todo: change this to true and remove default
         default: function () {
           return [
-            {start_date: '2017-05-18T13:00:00.419Z', end_date: '2017-05-18T14:00:00.419Z', title: 'Test Event 1'},
-            {start_date: '2017-05-18T15:00:00.419Z', end_date: '2017-05-18T16:00:00.419Z', title: 'Test Event 2'}
+            { start_date: '2017-05-18T13:00:00.419Z', end_date: '2017-05-18T14:00:00.419Z', title: 'Test Event 1' },
+            { start_date: '2017-05-18T15:00:00.419Z', end_date: '2017-05-18T16:00:00.419Z', title: 'Test Event 2' }
           ]
         }
       },
@@ -64,34 +69,50 @@
           return moment().format()
         }
       },
-      minDate: {
+      initMinDate: {
         type: String,
         default: function () {
           return moment().subtract(100, 'years').startOf('year').format()
         }
       },
-      maxDate: {
+      initMaxDate: {
         type: String,
         default: function () {
           return moment().add(100, 'years').endOf('year').format()
         }
       },
-      maxWidth: '100%'
+      initFirstDayOfWeek: {
+        type: String,
+        default: 'Sunday'
+      },
+      weeks: {
+        type: Number,
+        default: 6
+      },
+      daysPerWeek: {
+        type: Number,
+        default: 7
+      },
+      maxWidth: {
+        type: String,
+        default: '100%'
+      }
     },
     data () {
       return {
         dateToday: null,
         dateSelected: null,
-        weeksShown: 6,
-        // daysPerWeekShown: 7,
-        // firstDayOfWeek: 'Sunday',
+        weeksShown: 0,
+        daysPerWeekShown: 0,
+        firstDayOfWeek: 0,
+        minDate: {},
+        maxDate: {},
         calCache: [],
         displayedData: {
           year: 0,
           month: 0,
           week: 0,
-          daySelected: 0,
-          daysPerWeekShown: {}
+          daySelected: 0
         }
       }
     },
@@ -102,39 +123,37 @@
     beforeDestroy: function () {},
     methods: {
       init: function () {
-        this.setMaxWidth()
+        this.validateProps()
         this.dateToday = moment()
-        this.setDateSelected()
-
-        // todo: apparently you can't change the value of props. so I guess we won't do this right now.
-        // todo: instead I could make a copy of these variables in this.data, and the value in this.props is just the initial value.
-        // this.validateProps()
-
         this.updateDisplayedData()
       },
       setMaxWidth: function () {
-        if (/^[0-9]+((px)|[%])$/g.test(this.maxWidth)) {
-          document.getElementById('#calendar-container').css('max-width', this.maxWidth)
+        var calendarContainer = document.getElementById('calendar-container')
+        if (calendarContainer !== null && /^[0-9]+((px)|[%])$/g.test(this.maxWidth)) {
+          calendarContainer.style.maxWidth = this.maxWidth
         }
       },
       updateDisplayedData: function () {
         this.updateCache()
-        this.displayedData.year = this.dateSelected.get('year')
-        this.displayedData.month = this.dateSelected.get('month')
-        this.displayedData.daySelected = this.dateSelected.get('date')
+        this.displayedData.year = this.dateSelected.year()
+        this.displayedData.month = this.dateSelected.month()
+        this.displayedData.daySelected = this.dateSelected.date()
         // todo
       },
       updateCache: function () {
-        var thisYear = this.dateSelected.get('year')
-        var thisMonth = this.dateSelected.get('month')
-        // var thisDay = this.dateSelected.get('date')
+        var tempDate = this.getDisplayedStartDate()
+        var endDate = this.getDisplayedEndDate()
+
+        var thisYear = this.dateSelected.year()
+        var thisMonth = this.dateSelected.month()
+        // var thisDay = this.dateSelected.date()
+        /*
         var tempDate = moment({
           year: thisYear,
           month: thisMonth,
           day: 1
         })
-
-        var endOfMonth = moment(tempDate).endOf('month')
+        */
 
         // Create this year's cache if it doesn't exist
         if (this.calCache[thisYear] === undefined) { this.calCache[thisYear] = [] }
@@ -142,68 +161,132 @@
         // Create this month's cache if it doesn't exist
         if (this.calCache[thisYear][thisMonth] === undefined) { this.calCache[thisYear][thisMonth] = [] }
 
-        for (var i = 1; i < endOfMonth.date(); i++) {
-          this.calCache[thisYear][thisMonth][i] = [] // temp
+        // Create and/or update each day's cache
+        // for (null; startDate < endDate; startDate.add(1, 'days')) {
+        var i = 0
+        var max = this.getNumDaysDisplayed()
+        var y = tempDate.year()
+        var m = tempDate.month()
+        var d = tempDate.date()
+
+        while (tempDate.diff(endDate, 'days') > 0 && i < max) {
+          this.calCache[y][m][d] = [] // temp
+
+          // Increment everything
+          i++
           tempDate.add(1, 'days')
+          y = tempDate.year()
+          m = tempDate.month()
+          d = tempDate.date()
         }
       },
       setDateSelected: function (date) {
-        // if (date !== undefined && date !== null && !/(invalid)/.test(moment(date).inspect())) {
         if (date !== undefined && date !== null && moment(date).isValid()) {
           this.dateSelected = moment(date)
-        } else {
-          this.dateSelected = moment(this.initDateSelected)
+
+          if (!this.isDateSelectedDisplayed()) { this.updateDisplayedData() }
         }
       },
       getNumDaysDisplayed: function () {
-        // return this.daysPerWeekShown * this.weeksShown
-        // todo: if I need this function, I think it will be the difference between getDisplayedStartDate and getDisplayedEndDate
+        return this.daysPerWeekShown * this.weeksShown
+      },
+      isDateSelectedDisplayed: function () {
+        // todo: this logic probably needs to change when I implement different views besides by month.
+        // todo: basically this should be a function that checks if the selected date is between displayed start date
+        // todo: and displayed end date.
+        return (
+          this.dateSelected.year() !== this.displayedData.year ||
+          this.dateSelected.month() !== this.displayedData.month
+        )
       },
       getDisplayedStartDate: function () {
-        // var startOfMonth = moment(this.dateSelected).startOf('month')
-        // we need to figure out where in the row and where in the column the selected day lies.
-        // if there are 7 days, we know we can just get the day of the week.
-        // var daysDisplayed = this.weeksShown * this.daysPerWeekShown
-        var startDate = moment(this.dateSelected)
-        // todo
+        // todo: I need to figure out where in the row and where in the column the selected day lies.
+        // todo: if there are 7 days, we know we can just get the day of the week.
+        // todo: for now, I'm just going to write this assuming a full 6 weeks are displayed. (6 rows, 7 columns).
+        var startDate = moment(this.dateSelected).startOf('month')
+        var tempDayOfWeek = startDate.date()
+
+        if (tempDayOfWeek !== 0) {
+          startDate.subtract(tempDayOfWeek, 'days')
+        } else {
+          startDate.subtract(7, 'days')
+        }
+
         return startDate
       },
       getDisplayedEndDate: function () {
-        var endDate = moment(this.dateSelected)
-        // todo
+        // todo: see notes in getDisplayedStartDate
+        var daysDisplayed = this.weeksShown * this.daysPerWeekShown
+        var endDate = this.getDisplayedStartDate()
+
+        // endDate.add(daysDisplayed - 1, 'days') // todo This instead?
+        endDate.add(daysDisplayed, 'days')
         return endDate
+      },
+      getDayName: function (day) {
+        var offset = moment().day(this.firstDayOfWeek).day()
+        return moment().day(day + offset).format('dddd')
       },
       onNavLeft: function () {},
       onNavRight: function () {},
-      onMonthChange: function () {},
+      onMonthChange: function () {
+
+      },
       onYearChange: function () {},
       onTodayClick: function () {},
       validateProps: function () {
-        // validate eventData
+        // Validate maxWidth
+        this.setMaxWidth()
+
+        // Validate eventData
         // todo
 
         // Validate weeksShown
-        if (this.weeksShown < 1 || this.weeksShown > 18) {
-          console.warn('Value of weeksShown [' + this.weeksShown + '] is invalid. Setting to default.')
-          this.weeksShown = this.weeksShown.default
+        if (this.weeks < 1 || this.weeks > 18) {
+          console.warn('Value of weeks [' + this.weeksShown + '] is invalid. Setting to default.')
+          this.weeksShown = this.weeks.default
+        } else {
+          this.weeksShown = this.weeks
         }
 
         // Validate daysPerWeekShown
-        if (this.daysPerWeekShown < 1 || this.daysPerWeekShown > 7) {
-          console.warn('Value of daysPerWeekShown [' + this.daysPerWeekShown + '] is invalid. Setting to default.')
-          this.daysPerWeekShown = this.daysPerWeekShown.default
+        if (this.daysPerWeek < 1 || this.daysPerWeek > 7) {
+          console.warn('Value of daysPerWeek [' + this.daysPerWeekShown + '] is invalid. Setting to default.')
+          this.daysPerWeekShown = this.daysPerWeek.default
+        } else {
+          this.daysPerWeekShown = this.daysPerWeek
         }
 
         // Validate minDate
-        if (/(invalid)/.test(moment(this.minDate).inspect())) {
-          console.warn('Value of minDate [' + this.minDate + '] is invalid. setting to default.')
-          this.minDate = this.minDate.default
+        if (!moment(this.initMinDate).isValid()) {
+          console.warn('Value of initMinDate [' + this.initMinDate + '] is invalid. setting to default.')
+          this.minDate = moment(this.initMinDate.default())
+        } else {
+          this.minDate = moment(this.initMinDate)
         }
 
         // Validate maxDate
-        if (/(invalid)/.test(moment(this.maxDate).inspect())) {
-          console.warn('Value of maxDate [' + this.maxDate + '] is invalid. setting to default.')
-          this.maxDate = this.maxDate.default
+        if (!moment(this.initMaxDate).isValid()) {
+          console.warn('Value of initMaxDate [' + this.initMaxDate + '] is invalid. setting to default.')
+          this.maxDate = moment(this.initMaxDate.default())
+        } else {
+          this.maxDate = moment(this.initMaxDate)
+        }
+
+        // Validate dateSelected
+        if (!moment(this.initDateSelected).isValid()) {
+          console.warn('Value of initDateSelected [' + this.initDateSelected + '] is invalid. setting to default.')
+          this.dateSelected = moment(this.initDateSelected.default())
+        } else {
+          this.dateSelected = moment(this.initDateSelected)
+        }
+
+        // Validate firstDayOfWeek
+        if (!moment().day(this.initFirstDayOfWeek).isValid()) {
+          console.warn('Value of initFirstDayOfWeek [' + this.initFirstDayOfWeek + '] is invalid. setting to default.')
+          this.firstDayOfWeek = moment(this.initFirstDayOfWeek.default).day()
+        } else {
+          this.firstDayOfWeek = moment(this.initFirstDayOfWeek).day()
         }
       }
     }
@@ -220,7 +303,13 @@
 
   #calendar-container {
     border: 1px solid $calBorderColor;
-    flex-flow: column wrap;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
   }
 
   #calendar-container,
@@ -278,9 +367,22 @@
   #calendar-header > #cal-nav-right { order: 2; border-left: 1px solid $calBorderColor; }
 
   #calendar-header-labels {
+    height: $calHeaderHeight;
     border-top: 1px solid $calBorderColor;
     border-bottom: 1px solid $calBorderColor;
   }
+
+  #calendar-header-labels > .header-label,
+  #calendar-header-labels > .header-label > span {
+    width: 100%;
+    text-align: center;
+    line-height: $calHeaderHeight;
+    font-weight: bold;
+  }
+
+  #calendar-body > .week-container:not(:last-child) { border-bottom: 1px solid $calBorderColor; }
+  #calendar-header-labels > .header-label:not(:last-child),
+  #calendar-body > .week-container > .day-container:not(:last-child) { border-right: 1px solid $calBorderColor; }
 
   #calendar-header label {
     position: absolute;
@@ -304,7 +406,25 @@
     border: none;
     padding: 0 8px;
   }
-  
+
   #cal-nav-center button#btn-today { position: absolute; }
   #cal-nav-center button.month-is-cur#btn-today { visibility: hidden; }
+
+  #calendar-body {
+    flex: 1 0 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  #calendar-body > .week-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+  }
+  .week-container > .day-container {
+    width: 100%;
+    height: 100%;
+  }
 </style>
