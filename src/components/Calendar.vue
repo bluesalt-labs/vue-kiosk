@@ -8,7 +8,26 @@
         <i class="fa fa-chevron-right" aria-hidden="true"></i>
       </button>
       <div id="cal-nav-center">
-
+        <label for="month-dd" class="sr-only">Calendar Month</label>
+        <select name="month-dd" id="month-dd" dir="rtl" @change="onMonthChange">
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+        <label for="year-dd">Calendar Year</label>
+        <select name="year-dd" id="year-dd" @change="onYearChange">
+          <option v-for="yearVal in Object.keys(calCache)" :value="yearVal">{{ yearVal }}</option>
+        </select>
+        <button id="btn-today" class="month-is-cur" @click="onTodayClick">Today</button>
       </div>
     </div>
     <div id="calendar-header-labels">
@@ -39,18 +58,6 @@
           ]
         }
       },
-      weeksShown: {
-        type: Number,
-        default: 6
-      },
-      daysPerWeekShown: {
-        type: Number,
-        default: 7
-      },
-      firstDayOfWeek: {
-        type: String,
-        default: 'Sunday'
-      },
       initDateSelected: {
         type: String,
         default: function () {
@@ -75,6 +82,9 @@
       return {
         dateToday: null,
         dateSelected: null,
+        weeksShown: 6,
+        // daysPerWeekShown: 7,
+        // firstDayOfWeek: 'Sunday',
         calCache: [],
         displayedData: {
           year: 0,
@@ -150,7 +160,7 @@
         // todo: if I need this function, I think it will be the difference between getDisplayedStartDate and getDisplayedEndDate
       },
       getDisplayedStartDate: function () {
-        var startOfMonth = moment(this.dateSelected).startOf('month')
+        // var startOfMonth = moment(this.dateSelected).startOf('month')
         // we need to figure out where in the row and where in the column the selected day lies.
         // if there are 7 days, we know we can just get the day of the week.
         // var daysDisplayed = this.weeksShown * this.daysPerWeekShown
@@ -165,6 +175,9 @@
       },
       onNavLeft: function () {},
       onNavRight: function () {},
+      onMonthChange: function () {},
+      onYearChange: function () {},
+      onTodayClick: function () {},
       validateProps: function () {
         // validate eventData
         // todo
@@ -218,13 +231,13 @@
   #calendar-container > #calendar-header {
     flex-flow: row nowrap;
     font-size: 1.5em;
+    text-align: center;
   }
 
   #calendar-container > #calendar-header,
-  #calendar-container > #calendar-header > .cal-nav-btn,
-  #calendar-container > #calendar-header > #cal-nav-center {
-    height: $calHeaderHeight;
-  }
+  #calendar-container > #calendar-header select,
+  #calendar-container > #calendar-header button,
+  #calendar-container > #calendar-header > #cal-nav-center { height: $calHeaderHeight; }
 
   .cal-nav-btn {
     display: block;
@@ -245,8 +258,20 @@
     width: $calHeaderHeight;
     flex-shrink: 0;
   }
-  .cal-nav-btn:hover,
-  .cal-nav-btn:active { background: $calBorderColor; } /* todo: don't keep this color */
+
+  #calendar-header button,
+  #calendar-header select {
+    -webkit-transition: background 150ms;
+    transition: background 150ms;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+
+  #calendar-header button:hover, #calendar-header button:focus, #calendar-header button:active,
+  #calendar-header select:hover, #calendar-header select:focus, #calendar-header select:active {
+    background: rgba(166, 166, 166, 0.5)
+  }
 
   #calendar-header > #cal-nav-left { order: 0; border-right: 1px solid $calBorderColor; }
   #calendar-header > #cal-nav-center { order: 1; flex-grow: 1; width: 100%; }
@@ -256,4 +281,30 @@
     border-top: 1px solid $calBorderColor;
     border-bottom: 1px solid $calBorderColor;
   }
+
+  #calendar-header label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  #calendar-header select {
+    display: inline-block;
+    margin: 0 -3px;
+    background: transparent;
+    font-size: 1.2em;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    padding: 0 8px;
+  }
+  
+  #cal-nav-center button#btn-today { position: absolute; }
+  #cal-nav-center button.month-is-cur#btn-today { visibility: hidden; }
 </style>
