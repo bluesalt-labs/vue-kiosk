@@ -7,6 +7,13 @@
 </template>
 
 <script>
+  // Todo: there has to be a better way to do this:
+  require('@/js/vue-kiosk')
+  // use this to include in a component:
+  // var VueKiosk = window.VueKiosk
+  // And test that it's working with this:
+  // VueKiosk.test()
+
   export default {
     name: 'app',
     head: {
@@ -22,4 +29,3 @@
   /*@import '../node_modules/bootstrap/dist/css/bootstrap.css';*/
   @import './sass/vue-kiosk.scss';
 </style>
-h

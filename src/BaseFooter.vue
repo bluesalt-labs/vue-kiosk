@@ -1,6 +1,7 @@
 <template>
   <footer>
-    <div class="container-primary">
+    <div class="container-primary footer-container">
+      &copy;  BlueSalt Labs
     </div>
   </footer>
 </template>
@@ -14,8 +15,11 @@
 <style lang="scss">
   @import "sass/variables.scss";
 
-  footer {
+  footer,
+  .footer-container {
     background: $headerBg;
-    min-height: 50px;
+    color: $footerFontColor;
+    line-height: $footerHeight;
+    min-height: $footerHeight;
   }
 </style>

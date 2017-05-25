@@ -1,9 +1,6 @@
 <template>
-  <!-- todo: these css style settings are temporary -->
-  <div class="container-primary" style="height:90vh">
-    <div class="component-container"  style="height:90vh">
+  <div class="container-full-kiosk">
       <calendar></calendar>
-    </div>
   </div>
 </template>
 

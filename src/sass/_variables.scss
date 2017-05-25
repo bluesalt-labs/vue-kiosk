@@ -15,13 +15,22 @@ $mediaSM: 640px;
 $mediaXS: 320px;
 
 
-// Other
+// Header and Footer
 $headerHeight: 50px;
 $headerFontSize: 15px;
 $headerBg: #222222;
-$headerLinkColor: #eeeeee;
-$headerLinkColorHover: #ffffff;
+$headerFontColor: #EAEAEA;
+$headerLinkColor: #EEEEEE;
+$headerLinkColorHover: #FFFFFF;
 
+$footerHeight: $headerHeight;
+$footerFontSize: $headerFontSize;
+$footerBg: $headerBg;
+$footerFontColor: $headerFontColor;
+$footerLinkColor: $headerLinkColor;
+$footerLinkColorHover: $headerLinkColorHover;
+
+// Other
 $backgroundPrimary: #eeeeee;
 $textPrimary: #222222;
 

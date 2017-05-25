@@ -18,16 +18,30 @@ html, body, #app {
   color: $textPrimary;
 }
 
-.container-primary {
-  margin: 0 $containerMarginLg;
+.container-primary { margin: 0 $containerMarginLg; }
+
+.container-full-kiosk {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  height: calc(100vh - #{$headerHeight + $footerHeight});
+  overflow: hidden;
+}
+
+.container-primary,
+.component-full-kiosk {
+  height: calc(100% - #{($headerHeight * 2) + 30});
 }
 
 .component-container > *:first-child { margin: 30px auto; }
 
+.component-container.component-full-kiosk {
+  height: calc(100% - #{($headerHeight * 2) + 30px});
+}
+
 @media(max-width: $mediaSM) {
-  .container-primary {
-    margin: 0;
-  }
+  .container-primary { margin: 0; }
 }
 
 

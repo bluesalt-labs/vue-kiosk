@@ -41,7 +41,6 @@
           {{ (((weekId - 1) * daysPerWeekShown) + (dayId - 1)) }}
         </div>
       </div>
-      <!-- todo: put a for loop that iterates through days of a week nested in a for loop for the number of weeks -->
     </div>
   </div>
 </template>
