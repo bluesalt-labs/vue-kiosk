@@ -146,13 +146,6 @@
         var thisYear = this.dateSelected.year()
         var thisMonth = this.dateSelected.month()
         // var thisDay = this.dateSelected.date()
-        /*
-        var tempDate = moment({
-          year: thisYear,
-          month: thisMonth,
-          day: 1
-        })
-        */
 
         // Create this year's cache if it doesn't exist
         if (this.calCache[thisYear] === undefined) { this.calCache[thisYear] = [] }
@@ -318,7 +311,7 @@
 
   #calendar-container > #calendar-header {
     flex-flow: row nowrap;
-    font-size: 1.5em;
+    font-size: 3.5vmin;
     text-align: center;
   }
 
@@ -375,6 +368,7 @@
   #calendar-header-labels > .header-label > span {
     width: 100%;
     text-align: center;
+    font-size: 2vmin;
     line-height: $calHeaderHeight;
     font-weight: bold;
   }
@@ -397,7 +391,7 @@
     display: inline-block;
     margin: 0 -3px;
     background: transparent;
-    font-size: 1.2em;
+    font-size: 3.5vmin;
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
