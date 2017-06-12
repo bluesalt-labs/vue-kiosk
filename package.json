@@ -10,7 +10,7 @@
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "postinstall": "npm install express",
-    "deploy": "git subtree push --prefix dist heroku master"
+    "deploy": "git subtree push --prefix dist heroku develop"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
