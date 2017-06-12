@@ -1,0 +1,10 @@
+{
+  "name": "vue-kiosk",
+  "version": "1.0.0",
+  "description": "",
+  "author": "BlueSalt Labs",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install express"
+  }
+}
